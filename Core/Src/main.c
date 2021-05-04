@@ -19,11 +19,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usbd_cdc_if.h"
+#include "serial.h"
 #include "string.h"
 /* USER CODE END Includes */
 
@@ -56,7 +57,6 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint8_t *serial_data = "Hello from USB CDC!\r\n";
 /* USER CODE END 0 */
 
 /**
@@ -89,7 +89,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  int counter = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,7 +98,7 @@ int main(void)
   {
     GPIO_PinState keyState = HAL_GPIO_ReadPin(ONBOARD_PUSHBUTTON_GPIO_Port, ONBOARD_PUSHBUTTON_Pin);
     if(keyState == GPIO_PIN_SET){
-      CDC_Transmit_FS(serial_data, strlen(serial_data));
+      serial_printf("Button clicked %d times!\n", ++counter);
       HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_RESET);
       HAL_Delay(100);
     }else{
