@@ -20,11 +20,11 @@
 LoRa newLoRa(){
 	LoRa new_LoRa;
 
-	new_LoRa.frequency             = 433       ;
+	new_LoRa.frequency             = 915       ;
 	new_LoRa.spredingFactor        = SF_7      ;
 	new_LoRa.bandWidth			   = BW_125KHz ;
 	new_LoRa.crcRate               = CR_4_5    ;
-	new_LoRa.power				   = POWER_20db;
+	new_LoRa.power				   = POWER_14db;
 	new_LoRa.overCurrentProtection = 100       ;
 	new_LoRa.preamble			   = 8         ;
 
@@ -525,8 +525,7 @@ uint16_t LoRa_init(LoRa* _LoRa){
 			HAL_Delay(10);
 
 			read = LoRa_read(_LoRa, RegVersion);
-			serial_printf("read: %d\n", read);
-			if(read == 0x12)
+			if(read == 0x24)
 				return LORA_OK;
 			else
 				return LORA_NOT_FOUND;

@@ -19,5 +19,6 @@ void serial_printf(const char *format, ...) {
     } else {
         CDC_Transmit_FS((uint8_t *) error, strlen((const char *) error));
     }
+    HAL_Delay(10);
     return;
 }

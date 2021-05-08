@@ -63,7 +63,7 @@
 /* #define HAL_MMC_MODULE_ENABLED   */
 #define HAL_SPI_MODULE_ENABLED
 /* #define HAL_TIM_MODULE_ENABLED   */
-#define HAL_UART_MODULE_ENABLED
+/* #define HAL_UART_MODULE_ENABLED   */
 /* #define HAL_USART_MODULE_ENABLED   */
 /* #define HAL_IRDA_MODULE_ENABLED   */
 /* #define HAL_SMARTCARD_MODULE_ENABLED   */
@@ -263,7 +263,7 @@
 * Deactivated: CRC code cleaned from driver
 */
 
-#define USE_SPI_CRC                     0U
+#define USE_SPI_CRC                     1U
 
 /* Includes ------------------------------------------------------------------*/
 /**

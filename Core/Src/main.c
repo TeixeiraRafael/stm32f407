@@ -20,7 +20,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "spi.h"
-#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
@@ -28,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "serial.h"
 #include "string.h"
+#include "LoRa.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,24 +90,48 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
-  MX_UART4_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+   
   int counter = 0;
+  int status;
+
+  LoRa myLora;
+  myLora = newLoRa();
+  
+  myLora.frequency = 915;
+  myLora.spredingFactor = SF_7;
+  myLora.power = POWER_14db;
+
+  myLora.CS_port = SPI1_NSS_GPIO_Port;
+  myLora.CS_pin = SPI1_NSS_Pin;
+  myLora.reset_port = SPI1_RESET_GPIO_Port;
+  myLora.reset_pin = SPI1_RESET_Pin;
+  myLora.DIO0_port = SPI1_DIO0_GPIO_Port;
+  myLora.DIO0_pin = SPI1_DIO0_Pin;
+  myLora.hSPIx = &hspi1;
+  
+
+  status = LoRa_init(&myLora);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    GPIO_PinState keyState = HAL_GPIO_ReadPin(ONBOARD_PUSHBUTTON_GPIO_Port, ONBOARD_PUSHBUTTON_Pin);
-    if(keyState == GPIO_PIN_SET){
-      serial_printf("Button clicked %d times!\n", ++counter);
-      HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_RESET);
-      HAL_Delay(100);
-    }else{
-      HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
+  while (1)  {
+    char*  send_data;
+    send_data = "Hello world!";
+
+    serial_printf("LoRa status: %d\n", status);
+    serial_printf("Sending message...\n");
+    HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_RESET);
+
+    if(LoRa_transmit(&myLora, (uint8_t*)send_data, 12, 100) == 1){
+      serial_printf("Success!\n");  
     }
+
+    serial_printf("Done.\n");
+    HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, GPIO_PIN_SET);
+    HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
