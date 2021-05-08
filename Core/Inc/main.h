@@ -62,6 +62,12 @@ void Error_Handler(void);
 #define ONBOARD_PUSHBUTTON_GPIO_Port GPIOA
 #define ONBOARD_LED_Pin GPIO_PIN_1
 #define ONBOARD_LED_GPIO_Port GPIOA
+#define SPI1_DIO0_Pin GPIO_PIN_2
+#define SPI1_DIO0_GPIO_Port GPIOA
+#define SPI1_RESET_Pin GPIO_PIN_3
+#define SPI1_RESET_GPIO_Port GPIOA
+#define SPI1_NSS_Pin GPIO_PIN_4
+#define SPI1_NSS_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
